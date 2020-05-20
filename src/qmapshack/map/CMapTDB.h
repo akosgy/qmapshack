@@ -38,14 +38,23 @@
 
 #define TDB_UNIT 360
 
+class CMapIMG;
 class CMapDraw;
 
 class CMapTDB : public IMap
 {
 public:
 	CMapTDB(const QString& filename, CMapDraw *parent);
+	virtual ~CMapTDB();
 
     void draw(IDrawContext::buffer_t& buf) override;
+
+public slots:
+	void slotSetShowPolygons(bool yes) override;
+	void slotSetShowPolylines(bool yes) override;
+	void slotSetShowPOIs(bool yes) override;
+	void slotSetAdjustDetailLevel(qint32 level) override;
+	void slotSetTypeFile(const QString& filename) override;
 
 private:
 #pragma pack(1)
@@ -121,7 +130,7 @@ private:
 		QByteArray reserved; // Rest of the block
 	};
 
-	void readFile(const QString& fn);
+	void readFile(const QString& filename, CMapDraw *parent);
 
 	// TDB file contents
 	hdr_blk_t blkHdr;
@@ -129,6 +138,9 @@ private:
 	overview_map_blk_t blkOverview;
 	QVector<detail_map_blk_t> blkDetails;
 	checksum_blk_t blkChecksum;
+
+	// IMG tiles
+	QVector<QPointer<CMapIMG> > imgTiles;
 };
 
 #endif // CMAPTDB_H

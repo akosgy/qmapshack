@@ -28,6 +28,7 @@
 #include "inttypes.h"
 #include "map/CMapDraw.h"
 #include "map/CMapTDB.h"
+#include "map/CMapIMG.h"
 #include "units/IUnit.h"
 
 #include <QtGui>
@@ -49,24 +50,37 @@ static void readCString(QDataStream& stream, QString& str)
 }
 
 CMapTDB::CMapTDB(const QString &filename, CMapDraw *parent)
-	: IMap(filename,eFeatVisibility, parent)
+	: IMap(filename,eFeatVisibility | eFeatVectorItems | eFeatTypFile, parent)
 {
     qDebug() << "------------------------------";
 	qDebug() << "TDB: try to open" << filename;
 
-	readFile(filename);
+	readFile(filename, parent);
 }
 
+CMapTDB::~CMapTDB()
+{
+	// Iterate through the IMG tiles release the resources
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
+		{
+			delete (*it);
+			(*it) = NULL;
+		}
+	}
+}
 
-void CMapTDB::readFile(const QString& fn)
+void CMapTDB::readFile(const QString& filename, CMapDraw *parent)
 {
 	int i;
 	blkhdr_t hdr;
 	copyright_t cp;
 
-	qDebug() << fn;
+	qDebug() << filename;
 
-    QFile file(fn);
+	QFileInfo fi(filename);
+	QFile file(filename);
     file.open(QIODevice::ReadOnly);
 
     QDataStream stream(&file);
@@ -176,8 +190,11 @@ void CMapTDB::readFile(const QString& fn)
 		qDebug() << it->str;
 	}
 
-	// Generate IMG file name from map number
-	blkOverview.imgName = QString("%1.img").arg(blkOverview.mapNum, 8, 10, QChar('0'));
+	// Basemap IMG filename is the same as the TDB file with .img extension
+	blkOverview.imgName = fi.completeBaseName() + ".img";
+	// Open the basemap tile
+	imgTiles.push_back(new CMapIMG(fi.path() + "/" + blkOverview.imgName,parent));
+
 	qDebug() << "Overview  :" << blkOverview.imgName <<
 				"(" << blkOverview.north << "," << blkOverview.east <<
 				"," << blkOverview.south << "," << blkOverview.west << ")" << blkOverview.desc;
@@ -186,14 +203,83 @@ void CMapTDB::readFile(const QString& fn)
 	for(QVector<detail_map_blk_t>::iterator sit = blkDetails.begin();sit != blkDetails.end();++sit)
 	{
 		detail_map_blk_t &d = *sit;
+		// IMG file name is the map number padded with zeros up to 8 digits + .img extension
 		d.imgName = QString("%1.img").arg(d.mapNum, 8, 10, QChar('0'));
+		imgTiles.push_back(new CMapIMG(fi.path() + "/" + d.imgName,parent));
 		qDebug() << "Detail   :" << d.imgName <<
 					"(" << d.north << "," << d.east <<
 					"," << d.south << "," << d.west << ")" << d.desc;
-//		qDebug() << "Subfiles: " << d.nSubFiles << d.nMagicNum;
-		for(QVector<QString>::const_iterator suit = d.subFiles.begin();suit != d.subFiles.end();++suit)
+	}
+
+	isActivated = true;
+}
+
+void CMapTDB::slotSetShowPolygons(bool yes)
+{
+	IMap::slotSetShowPolygons(yes);
+
+	// Iterate through the IMG tiles and set the typ file for each subtile
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
 		{
-	//		qDebug() << "Name: " << *suit;
+			(*it)->slotSetShowPolygons(yes);
+		}
+	}
+}
+
+void CMapTDB::slotSetShowPolylines(bool yes)
+{
+	IMap::slotSetShowPolylines(yes);
+
+	// Iterate through the IMG tiles and set the typ file for each subtile
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
+		{
+			(*it)->slotSetShowPolylines(yes);
+		}
+	}
+}
+
+void CMapTDB::slotSetShowPOIs(bool yes)
+{
+	IMap::slotSetShowPOIs(yes);
+
+	// Iterate through the IMG tiles and set the typ file for each subtile
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
+		{
+			(*it)->slotSetShowPOIs(yes);
+		}
+	}
+}
+
+void CMapTDB::slotSetAdjustDetailLevel(qint32 level)
+{
+	IMap::slotSetAdjustDetailLevel(level);
+
+	// Iterate through the IMG tiles and set the typ file for each subtile
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
+		{
+			(*it)->slotSetAdjustDetailLevel(level);
+		}
+	}
+}
+
+void CMapTDB::slotSetTypeFile(const QString& filename)
+{
+	IMap::slotSetTypeFile(filename);
+
+	// Iterate through the IMG tiles and set the typ file for each subtile
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
+		{
+			(*it)->slotSetTypeFile(filename);
 		}
 	}
 }
@@ -204,4 +290,13 @@ void CMapTDB::draw(IDrawContext::buffer_t& buf) /* override */
     {
         return;
     }
+
+	// Iterate through the IMG tiles and call the draw function
+	for(QVector<QPointer<CMapIMG> >::iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+	{
+		if(!it->isNull())
+		{
+			(*it)->draw(buf);
+		}
+	}
 }
