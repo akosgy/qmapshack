@@ -168,36 +168,36 @@ public:
     virtual bool findPolylineCloseBy(const QPointF& pt1, const QPointF& pt2, qint32 threshold, QPolygonF& polyline);
 
 public slots:
-	virtual void slotSetShowPolygons(bool yes)
+    virtual void slotSetShowPolygons(bool yes)
     {
         showPolygons = yes;
     }
-	virtual void slotSetShowPolylines(bool yes)
+    virtual void slotSetShowPolylines(bool yes)
     {
         showPolylines = yes;
     }
-	virtual void slotSetShowPOIs(bool yes)
+    virtual void slotSetShowPOIs(bool yes)
     {
         showPOIs = yes;
     }
 
-	virtual void slotSetCachePath(const QString& path)
+    virtual void slotSetCachePath(const QString& path)
     {
         cachePath = path;
         configureCache();
     }
-	virtual void slotSetCacheSize(qint32 size)
+    virtual void slotSetCacheSize(qint32 size)
     {
         cacheSizeMB = size;
         configureCache();
     }
-	virtual void slotSetCacheExpiration(qint32 days)
+    virtual void slotSetCacheExpiration(qint32 days)
     {
         cacheExpiration = days;
         configureCache();
     }
 
-	virtual void slotSetAdjustDetailLevel(qint32 level)
+    virtual void slotSetAdjustDetailLevel(qint32 level)
     {
         adjustDetailLevel = level;
     }

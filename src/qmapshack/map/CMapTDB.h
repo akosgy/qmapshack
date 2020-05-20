@@ -45,16 +45,16 @@ class CMapTDB : public IMap
 {
 public:
 	CMapTDB(const QString& filename, CMapDraw *parent);
-	virtual ~CMapTDB();
+    virtual ~CMapTDB();
 
     void draw(IDrawContext::buffer_t& buf) override;
 
 public slots:
-	void slotSetShowPolygons(bool yes) override;
-	void slotSetShowPolylines(bool yes) override;
-	void slotSetShowPOIs(bool yes) override;
-	void slotSetAdjustDetailLevel(qint32 level) override;
-	void slotSetTypeFile(const QString& filename) override;
+    void slotSetShowPolygons(bool yes) override;
+    void slotSetShowPolylines(bool yes) override;
+    void slotSetShowPOIs(bool yes) override;
+    void slotSetAdjustDetailLevel(qint32 level) override;
+    void slotSetTypeFile(const QString& filename) override;
 
 private:
 #pragma pack(1)
@@ -102,7 +102,7 @@ private:
 		quint32 south;
 		quint32 west;
 		QString desc;        // Description
-		QString imgName;     // IMG file name based on 'mapNum'
+        QString imgName;     // IMG file name based on 'mapNum'
 	};
 
 	struct detail_map_blk_t
@@ -115,7 +115,7 @@ private:
 		quint32 south;
 		quint32 west;
 		QString desc;        // Description
-		QString imgName;     // IMG file name based on 'mapNum'
+        QString imgName;     // IMG file name based on 'mapNum'
 
 		quint16 nMagicNum;   // Unknown (always 0x0004 or 0x0005?)
 		quint16 nSubFiles;   // Number of subfiles in IMG-file = N
@@ -130,7 +130,7 @@ private:
 		QByteArray reserved; // Rest of the block
 	};
 
-	void readFile(const QString& filename, CMapDraw *parent);
+    void readFile(const QString& filename, CMapDraw *parent);
 
 	// TDB file contents
 	hdr_blk_t blkHdr;
@@ -139,8 +139,8 @@ private:
 	QVector<detail_map_blk_t> blkDetails;
 	checksum_blk_t blkChecksum;
 
-	// IMG tiles
-	QVector<QPointer<CMapIMG> > imgTiles;
+    // IMG tiles
+    QVector<QPointer<CMapIMG> > imgTiles;
 };
 
 #endif // CMAPTDB_H

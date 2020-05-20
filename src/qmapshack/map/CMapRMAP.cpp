@@ -26,7 +26,7 @@
 #include <QtWidgets>
 
 CMapRMAP::CMapRMAP(const QString &filename, CMapDraw *parent)
-	: IMap(filename,eFeatVisibility, parent)
+    : IMap(filename,eFeatVisibility, parent)
 {
     qDebug() << "------------------------------";
     qDebug() << "RMAP: try to open" << filename;
@@ -493,7 +493,7 @@ void CMapRMAP::draw(IDrawContext::buffer_t& buf) /* override */
     p.setOpacity(getOpacity() / 100.0);
     p.translate(-pp);
 
-	QFile file(fileName);
+    QFile file(fileName);
     file.open(QIODevice::ReadOnly);
 
     QDataStream stream(&file);

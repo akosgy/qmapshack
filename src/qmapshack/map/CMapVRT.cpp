@@ -32,7 +32,7 @@
 
 
 CMapVRT::CMapVRT(const QString &filename, CMapDraw *parent)
-	: IMap(filename,eFeatVisibility, parent)
+    : IMap(filename,eFeatVisibility, parent)
 {
     qDebug() << "------------------------------";
     qDebug() << "VRT: try to open" << filename;
