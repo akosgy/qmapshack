@@ -31,8 +31,6 @@ public:
     void draw(IDrawContext::buffer_t& buf) override;
 
 private:
-    QString filename;
-
 #pragma pack(1)
     struct hdr_t
     {

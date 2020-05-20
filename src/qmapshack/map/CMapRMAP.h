@@ -57,8 +57,6 @@ private:
     bool setProjection(const QString& projection, const QString& datum);
     level_t& findBestLevel(const QPointF &s);
 
-    QString filename;
-
     /// total width in number of px
     qint32 xsize_px = 0;
     /// total height in number of px

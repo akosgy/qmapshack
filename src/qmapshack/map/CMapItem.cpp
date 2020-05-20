@@ -23,6 +23,7 @@
 #include "map/CMapJNX.h"
 #include "map/CMapMAP.h"
 #include "map/CMapRMAP.h"
+#include "map/CMapTDB.h"
 #include "map/CMapTMS.h"
 #include "map/CMapVRT.h"
 #include "map/CMapWMTS.h"
@@ -100,7 +101,8 @@ void CMapItem::updateIcon()
         , {"img",  "://icons/32x32/MimeIMG.png"}
         , {"map",  "://icons/32x32/MimeMAP.png"}
         , {"wmts", "://icons/32x32/MimeWMTS.png"}
-        , {"tms",  "://icons/32x32/MimeTMS.png"}
+		, {"tdb",  "://icons/32x32/MimeTDB.png"}
+		, {"tms",  "://icons/32x32/MimeTMS.png"}
         , {"gemf", "://icons/32x32/MimeGEMF.png"}
     };
 
@@ -172,7 +174,11 @@ bool CMapItem::activate()
     {
         mapfile = new CMapIMG(filename, map);
     }
-    else if(fi.suffix().toLower() == "vrt")
+	else if(fi.suffix().toLower() == "tdb")
+	{
+		mapfile = new CMapTDB(filename, map);
+	}
+	else if(fi.suffix().toLower() == "vrt")
     {
         mapfile = new CMapVRT(filename, map);
     }

@@ -466,7 +466,6 @@ private:
         }
     };
 
-    QString filename;
     quint8 mask;
     quint32 mask32;
     quint64 mask64;

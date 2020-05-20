@@ -54,7 +54,7 @@ inline double tile2lat(int y, int z)
 }
 
 CMapTMS::CMapTMS(const QString &filename, CMapDraw *parent)
-    : IMapOnline(parent)
+	: IMapOnline(filename,parent)
 {
     qDebug() << "------------------------------";
     qDebug() << "TMS: try to open" << filename;

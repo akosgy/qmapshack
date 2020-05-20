@@ -41,7 +41,6 @@ private:
        @return Return true if all subfiles have overviews.
      */
     bool testForOverviews(const QString& filename);
-    QString filename;
     /// instance of GDAL dataset
     GDALDataset * dataset;
     /// number of color bands used by the *vrt

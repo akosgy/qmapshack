@@ -98,8 +98,6 @@ private:
 
     void readBasics();
 
-    QString filename;
-
     header_t header;
 
     /// top left point of the map

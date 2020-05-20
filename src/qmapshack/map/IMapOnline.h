@@ -76,7 +76,7 @@ public:
     void slotRequestFinished(QNetworkReply* reply);
 
 
-    IMapOnline(CMapDraw * parent);
+	IMapOnline(const QString &url, CMapDraw * parent);
     virtual ~IMapOnline() {}
 };
 

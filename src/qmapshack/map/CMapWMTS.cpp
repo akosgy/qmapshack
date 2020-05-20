@@ -31,7 +31,7 @@
 
 
 CMapWMTS::CMapWMTS(const QString &filename, CMapDraw *parent)
-    : IMapOnline(parent)
+	: IMapOnline(filename,parent)
 {
     qDebug() << "------------------------------";
     qDebug() << "WMTS: try to open" << filename;

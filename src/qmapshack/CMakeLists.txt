@@ -226,6 +226,7 @@ set( SRCS
     map/CMapPathSetup.cpp
     map/CMapPropSetup.cpp
     map/CMapRMAP.cpp
+    map/CMapTDB.cpp
     map/CMapTMS.cpp
     map/CMapVRT.cpp
     map/CMapWMTS.cpp
@@ -579,6 +580,7 @@ set( HDRS
     map/CMapPathSetup.h
     map/CMapPropSetup.h    
     map/CMapRMAP.h
+    map/CMapTDB.h
     map/CMapTMS.h
     map/CMapVRT.h
     map/CMapWMTS.h

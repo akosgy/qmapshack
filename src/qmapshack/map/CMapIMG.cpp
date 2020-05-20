@@ -128,8 +128,7 @@ static inline bool isCluttered(QVector<QRectF>& rectPois, const QRectF& rect)
 
 
 CMapIMG::CMapIMG(const QString &filename, CMapDraw *parent)
-    : IMap(eFeatVisibility | eFeatVectorItems | eFeatTypFile, parent)
-    , filename(filename)
+	: IMap(filename,eFeatVisibility | eFeatVectorItems | eFeatTypFile, parent)
     , fm(CMainWindow::self().getMapFont())
     , selectedLanguage(NOIDX)
 {
@@ -453,7 +452,7 @@ void CMapIMG::setupTyp()
                 continue;
             }
 
-            CFileExt file(filename);
+			CFileExt file(fileName);
             file.open(QIODevice::ReadOnly);
 
             QByteArray array;
@@ -472,7 +471,7 @@ void CMapIMG::readFile(CFileExt& file, quint32 offset, quint32 size, QByteArray&
 {
     if(offset + size > file.size())
     {
-        throw exce_t(eErrOpen, tr("Failed to read: ") + filename);
+		throw exce_t(eErrOpen, tr("Failed to read: ") + fileName);
     }
 
     data = QByteArray::fromRawData(file.data(offset, size), size);
@@ -510,12 +509,12 @@ void CMapIMG::readFile(CFileExt& file, quint32 offset, quint32 size, QByteArray&
 void CMapIMG::readBasics()
 {
     char tmpstr[64];
-    qint64 fsize    = QFileInfo(filename).size();
+	qint64 fsize    = QFileInfo(fileName).size();
 
-    CFileExt file(filename);
+	CFileExt file(fileName);
     if(!file.open(QIODevice::ReadOnly))
     {
-        throw exce_t(eErrOpen, tr("Failed to open: ") + filename);
+		throw exce_t(eErrOpen, tr("Failed to open: ") + fileName);
     }
 
     mask = (quint8) * file.data(0, 1);
@@ -539,11 +538,11 @@ void CMapIMG::readBasics()
 
     if(strncmp(pImgHdr->signature, "DSKIMG", 7) != 0)
     {
-        throw exce_t(errFormat, tr("Bad file format: ") + filename);
+		throw exce_t(errFormat, tr("Bad file format: ") + fileName);
     }
     if(strncmp(pImgHdr->identifier, "GARMIN", 7) != 0)
     {
-        throw exce_t(errFormat, tr("Bad file format: ") + filename);
+		throw exce_t(errFormat, tr("Bad file format: ") + fileName);
     }
 
     mapdesc  = QByteArray((const char*)pImgHdr->desc1, 20);
@@ -632,7 +631,7 @@ void CMapIMG::readBasics()
 
     if((dataoffset == sizeof(hdr_img_t)) || (dataoffset >= (size_t)fsize))
     {
-        throw exce_t(errFormat, tr("Failed to read file structure: ") + filename);
+		throw exce_t(errFormat, tr("Failed to read file structure: ") + fileName);
     }
 
     // gmapsupp.img files do not have a data offset field
@@ -667,16 +666,16 @@ void CMapIMG::readBasics()
     int cnt = 1;
     int tot = subfiles.count();
 
-    PROGRESS_SETUP(tr("Loading %1").arg(QFileInfo(filename).fileName()), 0, tot, CMainWindow::getBestWidgetForParent());
+	PROGRESS_SETUP(tr("Loading %1").arg(QFileInfo(fileName).fileName()), 0, tot, CMainWindow::getBestWidgetForParent());
 
     maparea = QRectF();
     QMap<QString, subfile_desc_t>::iterator subfile = subfiles.begin();
     while(subfile != subfiles.end())
     {
-        PROGRESS(cnt++, throw exce_t(errAbort, tr("User abort: ") + filename));
+		PROGRESS(cnt++, throw exce_t(errAbort, tr("User abort: ") + fileName));
         if((*subfile).parts.contains("GMP"))
         {
-            throw exce_t(errFormat, tr("File is NT format. QMapShack is unable to read map files with NT format: ") + filename);
+			throw exce_t(errFormat, tr("File is NT format. QMapShack is unable to read map files with NT format: ") + fileName);
         }
 
         readSubfileBasics(*subfile, file);
@@ -1346,7 +1345,7 @@ void CMapIMG::draw(IDrawContext::buffer_t& buf) /* override */
 void CMapIMG::loadVisibleData(bool fast, polytype_t& polygons, polytype_t& polylines, pointtype_t& points, pointtype_t& pois, unsigned level, const QRectF& viewport, QPainter& p)
 {
 #ifndef Q_OS_WIN32
-    CFileExt file(filename);
+	CFileExt file(fileName);
     if(!file.open(QIODevice::ReadOnly))
     {
         return;

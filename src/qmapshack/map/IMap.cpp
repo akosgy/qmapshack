@@ -23,10 +23,11 @@
 
 #include <QtWidgets>
 
-IMap::IMap(quint32 features, CMapDraw *parent)
+IMap::IMap(const QString &filename, quint32 features, CMapDraw *parent)
     : IDrawObject(parent)
     , map(parent)
     , flagsFeature(features)
+	, fileName(filename)
 {
     pjtar = pj_init_plus("+proj=longlat +ellps=WGS84 +datum=WGS84 +no_defs");
 }

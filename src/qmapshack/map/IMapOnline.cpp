@@ -25,8 +25,8 @@
 #include <QMessageBox>
 #include <QtNetwork>
 
-IMapOnline::IMapOnline(CMapDraw * parent)
-    : IMap(eFeatVisibility | eFeatTileCache, parent)
+IMapOnline::IMapOnline(const QString &url, CMapDraw * parent)
+	: IMap(url,eFeatVisibility | eFeatTileCache, parent)
 {
     accessManager = new QNetworkAccessManager(parent->thread());
     connect(accessManager, &QNetworkAccessManager::finished, this, &IMapOnline::slotRequestFinished);

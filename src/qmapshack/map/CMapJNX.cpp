@@ -78,8 +78,7 @@ static quint32 scale2jnx(qreal scale)
 
 
 CMapJNX::CMapJNX(const QString &filename, CMapDraw *parent)
-    : IMap(eFeatVisibility, parent)
-    , filename(filename)
+	: IMap(filename,eFeatVisibility, parent)
 {
     qDebug() << "------------------------------";
     qDebug() << "JNX: try to open" << filename;

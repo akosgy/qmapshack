@@ -57,7 +57,6 @@ private:
         quint64 offset;
     };
 
-    QString filename;
     quint32 version;
     quint32 tileSize;
     quint32 sourceNr;

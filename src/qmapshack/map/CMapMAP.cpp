@@ -31,8 +31,7 @@
 
 
 CMapMAP::CMapMAP(const QString &filename, CMapDraw *parent)
-    : IMap(eFeatVisibility | eFeatVectorItems, parent)
-    , filename(filename)
+	: IMap(filename,eFeatVisibility | eFeatVectorItems, parent)
 {
     qDebug() << "------------------------------";
     qDebug() << "MAP: try to open" << filename;
@@ -57,10 +56,10 @@ CMapMAP::~CMapMAP()
 
 void CMapMAP::readBasics()
 {
-    CFileExt file(filename);
+	CFileExt file(fileName);
     if(!file.open(QIODevice::ReadOnly))
     {
-        throw exce_t(eErrOpen, tr("Failed to open: ") + filename);
+		throw exce_t(eErrOpen, tr("Failed to open: ") + fileName);
     }
 
     QDataStream stream(&file);
@@ -70,7 +69,7 @@ void CMapMAP::readBasics()
     stream.readRawData(header.signature, sizeof(header.signature));
     if(strncmp(header.signature, "mapsforge binary OSM", sizeof(header.signature)) != 0)
     {
-        throw exce_t(errFormat, tr("Bad file format: ") + filename);
+		throw exce_t(errFormat, tr("Bad file format: ") + fileName);
     }
 
     stream >> header.sizeHeader;

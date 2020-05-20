@@ -34,7 +34,7 @@ class IMap : public IDrawObject
 {
     Q_OBJECT
 public:
-    IMap(quint32 features, CMapDraw * parent);
+	IMap(const QString &filename, quint32 features, CMapDraw * parent);
     virtual ~IMap();
 
     void saveConfig(QSettings& cfg) override;
@@ -73,9 +73,9 @@ public:
 
     virtual void getInfo(const QPoint&, QString&) {}
 
-    virtual void getToolTip(const QPoint&, QString&) const {}
+	virtual void getToolTip(const QPoint&, QString&) const {}
 
-    virtual void findPOICloseBy(const QPoint&, poi_t&) const {}
+	virtual void findPOICloseBy(const QPoint&, poi_t&) const {}
 
     /**
        @brief Return copyright notice if any
@@ -143,7 +143,12 @@ public:
         return adjustDetailLevel;
     }
 
-    const QString& getTypeFile() const
+	const QString& getFileName() const
+	{
+		return fileName;
+	}
+
+	const QString& getTypeFile() const
     {
         return typeFile;
     }
@@ -260,6 +265,7 @@ protected:
     qint32 cacheSizeMB     = 100; //< streaming map only: maximum size of all tiles in cache [MByte]
     qint32 cacheExpiration =   8; //< streaming map only: maximum age of tiles in cache [days]
 
+	QString fileName;  // Fully-qualified path to the map file
     QString copyright; //< a copyright string to be displayed as tool tip
 
     QString typeFile;
