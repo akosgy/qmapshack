@@ -36,8 +36,6 @@
 #define TDB_BLOCK_DETAIL_MAP 0x4C
 #define TDB_BLOCK_CHECKSUM 0x54
 
-#define TDB_UNIT 360
-
 class CMapIMG;
 class CMapDraw;
 
@@ -47,6 +45,7 @@ public:
 	CMapTDB(const QString& filename, CMapDraw *parent);
     virtual ~CMapTDB();
 
+    QString getMapName() const override;
     void draw(IDrawContext::buffer_t& buf) override;
 
 public slots:

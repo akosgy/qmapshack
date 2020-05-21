@@ -25,6 +25,7 @@
 #include <QImage>
 #include <QMutex>
 #include <QPointer>
+#include <QFileInfo>
 
 class CMapDraw;
 class IMapProp;
@@ -76,6 +77,15 @@ public:
 	virtual void getToolTip(const QPoint&, QString&) const {}
 
 	virtual void findPOICloseBy(const QPoint&, poi_t&) const {}
+
+    /**
+       @brief Returns the map's name
+       @return The map's customized name or the file's complete base name
+     */
+    virtual QString getMapName() const
+    {
+        return QFileInfo(getFileName()).completeBaseName();
+    }
 
     /**
        @brief Return copyright notice if any
@@ -273,4 +283,3 @@ protected:
 
 
 #endif //IMAP_H
-

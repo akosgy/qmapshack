@@ -87,7 +87,8 @@ void CMapTDB::readFile(const QString& filename, CMapDraw *parent)
 	stream.setByteOrder(QDataStream::LittleEndian);
 
 	// Reading TDB blocks
-	do {
+    do
+    {
 		// Read block header
 		hdr.blkid = 0; hdr.blklen = 0;
 		stream >> hdr.blkid;
@@ -107,7 +108,8 @@ void CMapTDB::readFile(const QString& filename, CMapDraw *parent)
 		// Process block data
 		QDataStream blks(blkData);
         blks.setByteOrder(QDataStream::LittleEndian);
-        switch(hdr.blkid) {
+        switch(hdr.blkid)
+        {
 		case TDB_BLOCK_HEADER:
 			blkHdr.hdr = hdr;
 			blks >> blkHdr.productId;
@@ -299,4 +301,9 @@ void CMapTDB::draw(IDrawContext::buffer_t& buf) /* override */
             (*it)->draw(buf);
         }
     }
+}
+
+QString CMapTDB::getMapName() const
+{
+    return blkHdr.mapName.isEmpty() ? IMap::getMapName() : blkHdr.mapName;
 }

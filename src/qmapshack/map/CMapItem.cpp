@@ -214,6 +214,7 @@ bool CMapItem::activate()
         return false;
     }
 
+    setText(0,mapfile->getMapName());
     setToolTip(0, mapfile->getCopyright());
 
     // append list of active map files
