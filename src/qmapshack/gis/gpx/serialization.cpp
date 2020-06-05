@@ -623,7 +623,11 @@ void CGisItemWpt::save(QDomNode& gpx, bool strictGpx11)
 void CGisItemWpt::readGcExt(const QDomNode& xmlCache)
 {
     //Geocaches only have one link
-    if(wpt.links.first().uri.url(QUrl::RemovePath).contains("geocaching.com"))
+    if(wpt.links.isEmpty())
+    {
+        geocache.service = eUnknown;
+    }
+    else if(wpt.links.first().uri.url(QUrl::RemovePath).contains("geocaching.com"))
     {
         geocache.service = eGcCom;
     }
