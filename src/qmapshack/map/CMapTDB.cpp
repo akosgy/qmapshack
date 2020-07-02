@@ -303,6 +303,15 @@ void CMapTDB::draw(IDrawContext::buffer_t& buf) /* override */
     }
 }
 
+void CMapTDB::getToolTip(const QPoint& px, QString& infotext) const /* override */
+{
+    // Iterate through the IMG tiles and call the getToolTip function of the tiles
+    for(QVector<QPointer<CMapIMG> >::const_iterator it = imgTiles.begin(); it != imgTiles.end(); ++it)
+    {
+        (*it)->getToolTip(px,infotext);
+    }
+}
+
 QString CMapTDB::getMapName() const
 {
     return blkHdr.mapName.isEmpty() ? IMap::getMapName() : blkHdr.mapName;

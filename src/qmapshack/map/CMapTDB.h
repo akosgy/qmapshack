@@ -47,6 +47,7 @@ public:
 
     QString getMapName() const override;
     void draw(IDrawContext::buffer_t& buf) override;
+    void getToolTip(const QPoint& px, QString& infotext) const override;
 
 public slots:
     void slotSetShowPolygons(bool yes) override;
