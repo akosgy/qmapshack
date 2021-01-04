@@ -1,4 +1,16 @@
 V1.XX.X
+[QMS-275] Routino: Add Spanish and Czech as selectable languages for turn instructions
+[QMS-279] Track metrics not updated when using UNDO / REDO in Edit mode
+[QMS-282] Tags icons/rating disappear from workspace after saving and closing a project
+
+V1.15.2
+[QMS-264] Windows: adapt build scripts for 1.15.1 release
+[QMS-265] Configuring BRouter offline on MacOS crashes
+[QMS-268] Crash after closing project where range is being selected
+[QMS-270] Windows: rename LICENSE file to 1LICENSE.txt
+[QMS-273] Windows: install Help search index files
+
+V1.15.1
 [QMS-158] Change Routino Profiles search for [prefix-]profiles.xml
 [QMS-216] QMapShack does not compile with Qt-5.15
 [QMS-217] Fix crash due to faulty profiles.xml
@@ -8,6 +20,10 @@ V1.XX.X
 [QMS-240] Fix negative courses in the ruler tool
 [QMS-244] Unable to create rotino database (planetsplitter: cannot open file)
 [QMS-247] Build error: "Target "qmapshack" links to target "Qt5::Positioning" but the target was not found"
+[QMS-254] MySQL: QMapShack does not automatically reconnect
+[QMS-257] Import gpx file to group folder does not trigger update
+[QMS-260] QMapTool: Enhance cut tool to work with files containig reference information
+[QMS-262] Wrong timestamp when loading FIT
 
 V1.15.0
 [QMS-68] Route Optimization
